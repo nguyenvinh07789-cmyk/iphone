@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXTGEN MOBILE - Điện Thoại Chính Hãng, Bảo Hành 1 Đổi 1 & Ưu Đãi Khủng</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        darkBg: '#0b0f19',
+                        darkCard: '#111827',
+                        darkBorder: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white text-xs py-2 px-4 shadow-md no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center gap-2 overflow-hidden text-center sm:text-left">
+                <span class="bg-amber-400 text-slate-900 font-extrabold text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider badge-flash">
+                    HOT PROMO
+                </span>
+                <span class="font-medium truncate">
+                    🔥 Giảm thêm 500.000đ khi nhập mã <span class="font-bold underline text-amber-300">TECHHOT500</span> | Miễn phí giao hàng COD đơn từ 15 Triệu
+                </span>
+            </div>
+            <div class="flex items-center gap-4 text-[11px] shrink-0 font-medium">
+                <button onclick="openWarrantyModal()" class="hover:text-amber-200 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-shield-halved text-[10px]"></i> Chính sách bảo hành
+                </button>
+                <span>|</span>
+                <button onclick="openWarrantyLookupModal()" class="hover:text-amber-200 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-magnifying-glass text-[10px]"></i> Tra cứu bảo hành
+                </button>
+                <span>|</span>
+                <span class="text-amber-200 font-bold"><i class="fa-solid fa-phone text-[10px]"></i> 1900 8888 66</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN HEADER & SEARCH BAR -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-slate-800 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer shrink-0" onclick="navigateToCatalog('all')">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            NEXTGEN <span class="text-blue-500">MOBILE</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Chính Hãng • Bảo Hành 1-1</p>
+                    </div>
+                </div>
+
+                <!-- Instant Search Input -->
+                <div class="flex-grow max-w-xl hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" oninput="handleSearch(this.value)" 
+                            placeholder="Tìm kiếm iPhone 16, Galaxy S24, Xiaomi 14, Chip Snapdragon..." 
+                            class="w-full bg-slate-900/90 border border-slate-700/80 text-xs sm:text-sm text-white rounded-2xl pl-11 pr-10 py-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-gray-500">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+                        <button onclick="resetAllFilters()" title="Xóa tìm kiếm" class="absolute right-3.5 top-3 text-gray-500 hover:text-white">
+                            <i class="fa-solid fa-circle-xmark text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Shopping Cart Trigger -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Warranty Lookup Quick Button -->
+                    <button onclick="openWarrantyLookupModal()" class="hidden lg:flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-xs font-semibold text-gray-200 transition-all">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                        <span>Tra Cứu Bảo Hành</span>
+                    </button>
+
+                    <!-- Cart Button with Animated Badge -->
+                    <button onclick="openCartDrawer()" class="relative p-3 bg-slate-900 border border-slate-700/80 rounded-2xl hover:border-blue-500 text-gray-200 hover:text-white transition-all shadow-md">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cartBadgeCount" class="absolute -top-1.5 -right-1.5 bg-blue-600 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 shadow">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar (underneath on small devices) -->
+            <div class="pb-3 md:hidden">
+                <div class="relative">
+                    <input type="text" oninput="handleSearch(this.value)" 
+                        placeholder="Tìm kiếm điện thoại theo tên, hãng, chip..." 
+                        class="w-full bg-slate-900 border border-slate-800 text-xs text-white rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:border-blue-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. MOBILE QUICK BRANDS HORIZONTAL SCROLLER -->
+    <div class="lg:hidden bg-slate-900/60 border-b border-slate-800 py-2.5 px-4 overflow-x-auto no-print">
+        <div id="mobileBrandsBar" class="flex items-center gap-2">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- 4. MAIN WORKSPACE / VIEWS -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- VIEW A: CATALOG VIEW (DANH MỤC LUÔN NẰM BÊN TRÁI PHÂN CHIA THEO HÃNG) -->
+        <div id="catalogView" class="fade-in space-y-8">
+            
+            <!-- Grid Layout: LEFT SIDEBAR (STICKY) + RIGHT CONTENT -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                <!-- ============================================== -->
+                <!-- LEFT COLUMN: DANH MỤC THEO HÃNG (LUÔN Ở BÊN TRÁI) -->
+                <!-- ============================================== -->
+                <aside class="lg:col-span-3 space-y-6 sticky top-28">
+                    
+                    <!-- 1. Danh Mục Theo Hãng Điện Thoại -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h2 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-blue-500"></i> Hãng Sản Xuất
+                            </h2>
+                            <span class="text-[10px] text-blue-400 font-semibold bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+                                7 Thương Hiệu
+                            </span>
+                        </div>
+
+                        <!-- Brand List Buttons -->
+                        <div id="brandListSidebar" class="space-y-1.5">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- 2. Lọc Theo Mức Giá -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-3 shadow-xl">
+                        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-coins text-amber-400"></i> Khoảng Giá (VNĐ)
+                        </h3>
+                        <div class="space-y-1 text-xs">
+                            <label class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-gray-300">
+                                <input type="radio" name="priceFilter" onchange="filterByPrice('all')" checked class="text-blue-600 focus:ring-0">
+                                <span>Tất cả mức giá</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-gray-300">
+                                <input type="radio" name="priceFilter" onchange="filterByPrice('<10m')" class="text-blue-600 focus:ring-0">
+                                <span>Dưới 10 Triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-gray-300">
+                                <input type="radio" name="priceFilter" onchange="filterByPrice('10-20m')" class="text-blue-600 focus:ring-0">
+                                <span>10 - 20 Triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-gray-300">
+                                <input type="radio" name="priceFilter" onchange="filterByPrice('20-30m')" class="text-blue-600 focus:ring-0">
+                                <span>20 - 30 Triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-gray-300">
+                                <input type="radio" name="priceFilter" onchange="filterByPrice('>30m')" class="text-blue-600 focus:ring-0">
+                                <span>Trên 30 Triệu (Flagship)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 3. Lọc Tính Năng Đột Phá -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-3 shadow-xl">
+                        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-purple-400"></i> Tính Năng Nổi Bật
+                        </h3>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="filterByFeature('all')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Tất cả</button>
+                            <button onclick="filterByFeature('5G')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Kết nối 5G</button>
+                            <button onclick="filterByFeature('120Hz')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Màn hình 120Hz</button>
+                            <button onclick="filterByFeature('Battery5000')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Pin ≥ 5000mAh</button>
+                            <button onclick="filterByFeature('Waterproof')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Kháng nước IP68</button>
+                            <button onclick="filterByFeature('Camera100')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-gray-300 font-medium">Camera 200MP</button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Cam Kết & Thông Tin Bảo Hành Nhanh (Sidebar Widget) -->
+                    <div class="bg-gradient-to-br from-blue-950/60 to-slate-900 border border-blue-500/20 rounded-3xl p-5 space-y-3.5 shadow-xl">
+                        <div class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-sm"></i> Cam Kết Bảo Hành Vàng
+                        </div>
+                        <ul class="text-xs space-y-2.5 text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5 text-[11px]"></i>
+                                <span><strong>100% Chính Hãng:</strong> Đầy đủ hóa đơn GTGT (VAT) điện tử.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-arrows-rotate text-blue-400 mt-0.5 text-[11px]"></i>
+                                <span><strong>1 Đổi 1 trong 30 ngày:</strong> Đổi ngay máy mới nếu lỗi NSX.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-wrench text-amber-400 mt-0.5 text-[11px]"></i>
+                                <span><strong>Bảo hành 12 - 24T:</strong> Tại các TTBH ủy quyền toàn quốc.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-truck-fast text-purple-400 mt-0.5 text-[11px]"></i>
+                                <span><strong>Hỏa Tốc 2H:</strong> Giao hàng COD kiểm tra trước khi trả tiền.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </aside>
+
+                <!-- ============================================== -->
+                <!-- RIGHT COLUMN: PROMOTIONS & PRODUCTS CATALOG -->
+                <!-- ============================================== -->
+                <section class="lg:col-span-9 space-y-8">
+                    
+                    <!-- Flash Sale & Promotion Hero Banner with Real-time Countdown Timer -->
+                    <div class="relative bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-3xl border border-blue-500/30 overflow-hidden p-6 sm:p-8 shadow-2xl">
+                        <!-- Background glow -->
+                        <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                            <div class="space-y-3 text-center md:text-left">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-600/30 border border-rose-500/40 text-rose-300 text-xs font-bold uppercase tracking-wider">
+                                    <i class="fa-solid fa-bolt-lightning text-amber-400"></i> FLASH SALE KẾT THÚC TRONG
+                                </div>
+                                
+                                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                                    Lễ Hội Smartphone 2026
+                                </h1>
+                                <p class="text-sm text-gray-300 max-w-lg">
+                                    Ưu đãi độc quyền lên tới 5.000.000đ khi thu cũ đổi mới. Tặng kèm gói bảo hành rơi vỡ 12 tháng trị giá 2.500.000đ.
+                                </p>
+
+                                <!-- Countdown Timer Display -->
+                                <div class="flex items-center justify-center md:justify-start gap-2 pt-2">
+                                    <div class="bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl text-center min-w-[54px]">
+                                        <span id="timerHours" class="text-xl font-black text-amber-400 font-mono-code">14</span>
+                                        <span class="block text-[9px] text-gray-400 uppercase">Giờ</span>
+                                    </div>
+                                    <span class="text-xl font-bold text-gray-500">:</span>
+                                    <div class="bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl text-center min-w-[54px]">
+                                        <span id="timerMinutes" class="text-xl font-black text-amber-400 font-mono-code">42</span>
+                                        <span class="block text-[9px] text-gray-400 uppercase">Phút</span>
+                                    </div>
+                                    <span class="text-xl font-bold text-gray-500">:</span>
+                                    <div class="bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl text-center min-w-[54px]">
+                                        <span id="timerSeconds" class="text-xl font-black text-rose-400 font-mono-code">18</span>
+                                        <span class="block text-[9px] text-gray-400 uppercase">Giây</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right CTA / Banner Visual -->
+                            <div class="shrink-0 flex flex-col items-center gap-3">
+                                <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 text-center space-y-1">
+                                    <span class="text-[10px] text-gray-400 uppercase font-semibold">Tặng Ngay Gói</span>
+                                    <div class="text-amber-400 font-extrabold text-sm sm:text-base">BẢO HÀNH VIP 1 ĐỔI 1</div>
+                                    <p class="text-[11px] text-gray-300">Áp dụng cho mọi dòng Flagship</p>
+                                </div>
+                                <button onclick="selectBrand('Apple')" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all">
+                                    Xem Sản Phẩm Khuyến Mãi →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Promotion Codes Box -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-gray-200 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-ticket text-amber-400"></i> Mã Khuyến Mãi Đang Hoạt Động (Nhấn để sao chép)
+                            </h3>
+                            <span class="text-xs text-blue-400">Tự động trừ tiền khi đặt hàng</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="bg-slate-900 border border-slate-800 hover:border-blue-500 p-3.5 rounded-2xl flex flex-col justify-between cursor-pointer transition-all group" onclick="copyVoucher('TECHHOT500')">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-mono-code font-bold text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">TECHHOT500</span>
+                                        <i class="fa-regular fa-copy text-gray-500 group-hover:text-blue-400 text-xs"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-white">Giảm 500.000đ</div>
+                                    <div class="text-[10px] text-gray-400 mt-0.5">Đơn từ 10.000.000đ</div>
+                                </div>
+                                <div class="text-[10px] text-blue-400 font-semibold pt-2 text-right">Bấm để dùng →</div>
+                            </div>
+
+                            <div class="bg-slate-900 border border-slate-800 hover:border-blue-500 p-3.5 rounded-2xl flex flex-col justify-between cursor-pointer transition-all group" onclick="copyVoucher('FREESHIP')">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-mono-code font-bold text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">FREESHIP</span>
+                                        <i class="fa-regular fa-copy text-gray-500 group-hover:text-emerald-400 text-xs"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-white">Miễn Phí Vận Chuyển</div>
+                                    <div class="text-[10px] text-gray-400 mt-0.5">Đơn hàng từ 5.000.000đ</div>
+                                </div>
+                                <div class="text-[10px] text-emerald-400 font-semibold pt-2 text-right">Bấm để dùng →</div>
+                            </div>
+
+                            <div class="bg-slate-900 border border-slate-800 hover:border-blue-500 p-3.5 rounded-2xl flex flex-col justify-between cursor-pointer transition-all group" onclick="copyVoucher('NEXTGEN1TR')">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-mono-code font-bold text-xs text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">NEXTGEN1TR</span>
+                                        <i class="fa-regular fa-copy text-gray-500 group-hover:text-purple-400 text-xs"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-white">Giảm 1.000.000đ</div>
+                                    <div class="text-[10px] text-gray-400 mt-0.5">Dành cho Flagship từ 25tr</div>
+                                </div>
+                                <div class="text-[10px] text-purple-400 font-semibold pt-2 text-right">Bấm để dùng →</div>
+                            </div>
+
+                            <div class="bg-slate-900 border border-slate-800 hover:border-blue-500 p-3.5 rounded-2xl flex flex-col justify-between cursor-pointer transition-all group" onclick="copyVoucher('VIPCARE')">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-mono-code font-bold text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">VIPCARE</span>
+                                        <i class="fa-regular fa-copy text-gray-500 group-hover:text-amber-400 text-xs"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-white">Bảo Hành VIP 1-1</div>
+                                    <div class="text-[10px] text-gray-400 mt-0.5">Đổi mới trọn 12 tháng</div>
+                                </div>
+                                <div class="text-[10px] text-amber-400 font-semibold pt-2 text-right">Bấm để dùng →</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Catalog Header & Sorting Toolbar -->
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="activeFilterTag" class="text-xl font-bold text-white">Tất cả sản phẩm</h2>
+                                <span id="productsCountDisplay" class="text-xs text-gray-400 font-medium bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700">17 sản phẩm</span>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-0.5">Sản phẩm phân phối chính hãng kèm bảo hành 1 đổi 1 trong 30 ngày</p>
+                        </div>
+
+                        <!-- Sorting controls -->
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <span class="text-xs text-gray-400 shrink-0 hidden sm:inline">Sắp xếp:</span>
+                            <select id="sortSelect" onchange="handleSort(this.value)" 
+                                class="bg-slate-900 border border-slate-800 text-xs text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500 w-full sm:w-auto">
+                                <option value="default">Mặc định (Khuyên dùng)</option>
+                                <option value="price-asc">Giá: Thấp đến Cao</option>
+                                <option value="price-desc">Giá: Cao đến Thấp</option>
+                                <option value="bestseller">Bán chạy nhất</option>
+                                <option value="discount">Khuyến mãi nhiều nhất</option>
+                                <option value="name">Tên sản phẩm (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Products Grid -->
+                    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <!-- VIEW B: DEDICATED PRODUCT DETAILS PAGE (KHI NHẤN VÀO SẢN PHẨM SẼ QUA MỘT TRANG KHÁC) -->
+        <div id="detailView" class="fade-in hidden space-y-12">
+            <!-- Back to Catalog button -->
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <button onclick="navigateToCatalog('all')" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-200 hover:text-white rounded-xl text-xs font-bold transition-all border border-slate-700">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại danh mục điện thoại
+                </button>
+                <div class="flex items-center gap-2 text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                    <i class="fa-solid fa-certificate"></i> Cam kết 100% Chính Hãng VN/A
+                </div>
+            </div>
+
+            <!-- Main Detail Component Content Container -->
+            <div id="productDetailContent">
+                <!-- Dynamically populated by renderProductDetailView() -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 5. SLIDE-OVER SHOPPING CART DRAWER -->
+    <div id="cartOverlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity no-print"></div>
+    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col no-print">
+        
+        <!-- Cart Header -->
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2 font-bold text-white text-base">
+                <i class="fa-solid fa-bag-shopping text-blue-500"></i>
+                <span>Giỏ Hàng Công Nghệ</span>
+            </div>
+            <button onclick="closeCartDrawer()" class="p-2 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartDrawerItemsList" class="flex-grow overflow-y-auto p-5 space-y-3">
+            <!-- Dynamic items rendered by app.js -->
+        </div>
+
+        <!-- Voucher Input in Drawer -->
+        <div class="px-5 py-3 border-t border-slate-800 bg-slate-900/60">
+            <div class="flex gap-2">
+                <input type="text" id="voucherCodeInput" placeholder="Mã giảm giá (ví dụ: TECHHOT500)" 
+                    class="bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 flex-grow uppercase font-mono-code focus:outline-none focus:border-blue-500">
+                <button onclick="applyVoucherCode()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-all">
+                    Áp dụng
+                </button>
+            </div>
+        </div>
+
+        <!-- Cart Summary Footer -->
+        <div class="p-5 border-t border-slate-800 bg-slate-900 space-y-4">
+            <div class="flex justify-between items-center text-sm font-semibold">
+                <span class="text-gray-400">Tạm tính:</span>
+                <span id="cartSubtotalPrice" class="text-xl font-extrabold text-blue-400">0đ</span>
+            </div>
+            <p class="text-[11px] text-gray-500">Phí giao hàng & thuế VAT sẽ được tính ở bước thanh toán tiếp theo.</p>
+            <button onclick="openCheckoutModal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+                <span>Tiến Hành Đặt Hàng & Nhập Thông Tin</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 6. CHECKOUT MODAL (MÀN HÌNH MUA HÀNG & THU THẬP THÔNG TIN BẮT BUỘC) -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6 my-auto">
+            
+            <!-- Modal Title -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-blue-500"></i> Xác Nhận Đơn Hàng & Thông Tin Giao Hàng
+                    </h2>
+                    <p class="text-xs text-gray-400">Tất cả các thông tin khách hàng dưới đây đều là bắt buộc để lập hóa đơn và kích hoạt bảo hành</p>
+                </div>
+                <button onclick="closeCheckoutModal()" class="p-2 text-gray-400 hover:text-white rounded-xl">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="checkoutForm" onsubmit="handleCheckoutFormSubmit(event)" class="space-y-6">
+
+                <!-- SECTION 1: THÔNG TIN KHÁCH HÀNG (TẤT CẢ BẮT BUỘC: HỌ TÊN, CCCD, SĐT, ĐỊA CHỈ, EMAIL, GHI CHÚ GIAO HÀNG) -->
+                <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-shield"></i> 1. Thông Tin Khách Hàng (Tất Cả Đều Bắt Buộc *)
+                        </h3>
+                        <span class="text-[11px] text-amber-400 font-medium">* Yêu cầu quy chuẩn Bộ Công Thương</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Họ và tên -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Họ và tên người nhận hàng <span class="text-rose-500 font-bold">*</span>
+                            </label>
+                            <input type="text" id="custFullName" required placeholder="Ví dụ: Nguyễn Văn An"
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500">
+                        </div>
+
+                        <!-- Số CCCD -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Số CCCD / Căn cước công dân (12 số) <span class="text-rose-500 font-bold">*</span>
+                            </label>
+                            <input type="text" id="custIdCard" required maxlength="12" placeholder="Ví dụ: 001201012345"
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500 font-mono-code">
+                        </div>
+
+                        <!-- Số điện thoại -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Số điện thoại liên hệ <span class="text-rose-500 font-bold">*</span>
+                            </label>
+                            <input type="tel" id="custPhone" required maxlength="10" placeholder="Ví dụ: 0901234567"
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500 font-mono-code">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Email nhận hóa đơn điện tử VAT <span class="text-rose-500 font-bold">*</span>
+                            </label>
+                            <input type="email" id="custEmail" required placeholder="Ví dụ: nguyenvanan@gmail.com"
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500">
+                        </div>
+
+                        <!-- Địa chỉ giao hàng -->
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Địa chỉ giao hàng chi tiết <span class="text-rose-500 font-bold">*</span>
+                            </label>
+                            <input type="text" id="custAddress" required placeholder="Số nhà, Tên đường, Phường/Xã, Quận/Huyện, Tỉnh/Thành Phố"
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500">
+                        </div>
+
+                        <!-- Ghi chú giao hàng BẮT BUỘC -->
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">
+                                Ghi chú giao hàng <span class="text-rose-500 font-bold">* (Bắt buộc)</span>
+                            </label>
+                            <textarea id="custNote" rows="2" required placeholder="Ví dụ: Gọi trước khi giao 15 phút, giao giờ hành chính, gọi số phụ nếu không nhấc máy..."
+                                class="w-full bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: 2 PHƯƠNG THỨC VẬN CHUYỂN -->
+                <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-truck-fast"></i> 2. Phương Thức Vận Chuyển
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Option 1: Giao Hàng Tiêu Chuẩn COD -->
+                        <label class="radio-card relative block">
+                            <input type="radio" name="shippingMethod" value="standard" checked onchange="selectShippingMethod('standard')" class="sr-only">
+                            <div class="radio-content p-4 rounded-xl border border-slate-700 bg-slate-900 flex items-start gap-3 h-full">
+                                <span class="radio-indicator w-4 h-4 rounded-full border border-gray-500 shrink-0 mt-0.5"></span>
+                                <div class="space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-white">Giao Hàng Tiêu Chuẩn (COD)</span>
+                                        <span class="text-xs font-bold text-blue-400">30.000đ</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-400">Thời gian 2 - 3 ngày. Miễn phí cho đơn từ 15 Triệu.</p>
+                                    <div class="text-[10px] text-emerald-400 font-medium">✓ Đồng kiểm khi nhận máy</div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Option 2: Giao Nhanh Express -->
+                        <label class="radio-card relative block">
+                            <input type="radio" name="shippingMethod" value="express" onchange="selectShippingMethod('express')" class="sr-only">
+                            <div class="radio-content p-4 rounded-xl border border-slate-700 bg-slate-900 flex items-start gap-3 h-full">
+                                <span class="radio-indicator w-4 h-4 rounded-full border border-gray-500 shrink-0 mt-0.5"></span>
+                                <div class="space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-white">Giao Nhanh Express (Hỏa Tốc)</span>
+                                        <span class="text-xs font-bold text-amber-400">60.000đ</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-400">Giao siêu tốc 2 Giờ (Nội thành) hoặc 24 Giờ toàn quốc.</p>
+                                    <div class="text-[10px] text-amber-400 font-medium">✓ Bảo hiểm vận chuyển 100% bồi thường</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: 3 PHƯƠNG THỨC THANH TOÁN -->
+                <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-credit-card"></i> 3. Phương Thức Thanh Toán
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Method 1: Tiền mặt -->
+                        <label class="radio-card relative block">
+                            <input type="radio" name="paymentMethod" value="cash" checked onchange="selectPaymentMethod('cash')" class="sr-only">
+                            <div class="radio-content p-3.5 rounded-xl border border-slate-700 bg-slate-900 flex items-center gap-3 h-full">
+                                <span class="radio-indicator w-4 h-4 rounded-full border border-gray-500 shrink-0"></span>
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Tiền Mặt (COD)</span>
+                                    <span class="text-[10px] text-gray-400">Trả tiền mặt khi nhận hàng</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Method 2: Ví MoMo -->
+                        <label class="radio-card relative block">
+                            <input type="radio" name="paymentMethod" value="momo" onchange="selectPaymentMethod('momo')" class="sr-only">
+                            <div class="radio-content p-3.5 rounded-xl border border-slate-700 bg-slate-900 flex items-center gap-3 h-full">
+                                <span class="radio-indicator w-4 h-4 rounded-full border border-gray-500 shrink-0"></span>
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Ví Điện Tử MoMo</span>
+                                    <span class="text-[10px] text-pink-400">Quét mã ví MoMo tự động</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Method 3: QR Banking -->
+                        <label class="radio-card relative block">
+                            <input type="radio" name="paymentMethod" value="qr_banking" onchange="selectPaymentMethod('qr_banking')" class="sr-only">
+                            <div class="radio-content p-3.5 rounded-xl border border-slate-700 bg-slate-900 flex items-center gap-3 h-full">
+                                <span class="radio-indicator w-4 h-4 rounded-full border border-gray-500 shrink-0"></span>
+                                <div>
+                                    <span class="text-xs font-bold text-white block">QR Banking (VietQR)</span>
+                                    <span class="text-[10px] text-blue-400">Chuyển khoản 24/7 mọi ngân hàng</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Payment Hints -->
+                    <div id="hint-cash" class="payment-hint text-xs text-gray-400 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Quý khách vui lòng chuẩn bị số tiền mặt tương ứng khi nhân viên bưu tá giao hàng.
+                    </div>
+                    <div id="hint-momo" class="payment-hint hidden text-xs text-gray-400 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-circle-info text-pink-400 mr-1"></i> Sau khi bấm Xác Nhận, hệ thống sẽ xuất mã QR MoMo và số ví để quý khách chuyển khoản.
+                    </div>
+                    <div id="hint-qr_banking" class="payment-hint hidden text-xs text-gray-400 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Mã VietQR động kèm chính xác số tiền và mã đơn hàng sẽ hiển thị trên Hóa Đơn Điện Tử.
+                    </div>
+                </div>
+
+                <!-- SECTION 4: HÓA ĐƠN & ĐIỀU KHOẢN (ĐỒNG Ý ĐIỀU KHOẢN BẮT BUỘC & TÙY CHỌN XUẤT HÓA ĐƠN VAT) -->
+                <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-800 space-y-4">
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> 4. Hóa Đơn & Điều Khoản Pháp Lý
+                    </h3>
+
+                    <!-- Checkbox 1: BẮT BUỘC PHẢI ĐỒNG Ý VỚI CÁC ĐIỀU KHOẢN -->
+                    <div class="p-3.5 bg-slate-900 border border-slate-700/80 rounded-xl space-y-1">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" id="agreeTermsCheckbox" required class="w-4 h-4 rounded text-blue-600 focus:ring-0 mt-0.5">
+                            <span class="text-xs text-gray-200">
+                                <strong>Tôi xác nhận và đồng ý với các điều khoản:</strong> Tôi cam kết các thông tin cá nhân (CCCD, SĐT, địa chỉ) là chính xác; đồng ý với 
+                                <button type="button" onclick="openTermsModal()" class="text-blue-400 underline font-semibold">Quy định mua bán</button> và 
+                                <button type="button" onclick="openWarrantyModal()" class="text-blue-400 underline font-semibold">Chính sách bảo hành 1 đổi 1</button> của NextGen Mobile. <span class="text-rose-500 font-bold">* (Bắt buộc)</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Checkbox 2: XUẤT HÓA ĐƠN VAT CHO CÔNG TY -->
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-slate-900/70 border border-slate-800 rounded-xl">
+                            <input type="checkbox" id="vatInvoiceCheckbox" onchange="toggleVATInvoice(this)" class="w-4 h-4 rounded text-blue-600 focus:ring-0">
+                            <span class="text-xs text-gray-300 font-semibold flex items-center gap-2">
+                                <i class="fa-solid fa-building text-blue-400"></i>
+                                Yêu cầu xuất Hóa Đơn Điện Tử Giá Trị Gia Tăng (VAT 10%) cho Doanh nghiệp / Tổ chức
+                            </span>
+                        </label>
+
+                        <!-- Collapsible VAT Company Fields -->
+                        <div id="vatInvoiceFields" class="hidden p-4 bg-slate-900 border border-blue-500/30 rounded-xl space-y-3">
+                            <div class="text-xs font-bold text-blue-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-receipt"></i> Thông tin pháp lý doanh nghiệp xuất VAT
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Tên Công Ty / Tổ chức *</label>
+                                    <input type="text" id="vatCompanyName" placeholder="Công ty TNHH Giải Pháp Công Nghệ..."
+                                        class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Mã Số Thuế (MST) *</label>
+                                    <input type="text" id="vatTaxCode" placeholder="Ví dụ: 0312345678"
+                                        class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 font-mono-code focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-gray-400 mb-1">Địa chỉ trụ sở công ty theo GPKD *</label>
+                                    <input type="text" id="vatCompanyAddress" placeholder="Tầng 5, Tòa nhà Bitexco, Q.1, TP.HCM..."
+                                        class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-gray-400 mb-1">Email nhận Hóa Đơn Điện Tử (.xml & .pdf) *</label>
+                                    <input type="email" id="vatEmail" placeholder="ketoan@congty.com"
+                                        class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: TÓM TẮT ĐƠN HÀNG VÀ TÍNH TIỀN -->
+                <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-800 space-y-4">
+                    <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">
+                        Sản phẩm đã chọn & Bảng tổng kết chi phí
+                    </h3>
+
+                    <!-- Mini items list -->
+                    <div id="checkoutItemsList" class="space-y-2 max-h-44 overflow-y-auto pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Price breakdown -->
+                    <div class="border-t border-slate-700 pt-3 space-y-1.5 text-xs">
+                        <div class="flex justify-between text-gray-400">
+                            <span>Tạm tính tiền hàng:</span>
+                            <span id="checkoutSubtotal" class="text-white font-mono-code">0đ</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>Phí vận chuyển:</span>
+                            <span id="checkoutShippingFee" class="text-white font-mono-code">30.000đ</span>
+                        </div>
+                        <div id="checkoutDiscountRow" class="flex justify-between text-emerald-400 hidden">
+                            <span>Giảm giá khuyến mãi (Voucher):</span>
+                            <span id="checkoutDiscountAmount" class="font-mono-code">-0đ</span>
+                        </div>
+                        <div id="checkoutVatRow" class="flex justify-between text-amber-400 hidden">
+                            <span>Thuế VAT (10%):</span>
+                            <span id="checkoutVatAmount" class="font-mono-code">+0đ</span>
+                        </div>
+                        <div class="border-t border-slate-700 pt-3 flex justify-between items-baseline">
+                            <span class="text-sm font-bold text-white">TỔNG TIỀN THANH TOÁN:</span>
+                            <span id="checkoutFinalTotal" class="text-2xl font-black text-blue-400 font-mono-code">0đ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeCheckoutModal()" class="px-5 py-3 rounded-xl border border-slate-700 text-xs font-semibold text-gray-300 hover:bg-slate-800 transition-colors">
+                        Quay lại giỏ hàng
+                    </button>
+                    <button type="submit" class="px-7 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Xác Nhận Đặt Hàng & Xuất Hóa Đơn</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 7. OFFICIAL E-INVOICE MODAL (XUẤT HÓA ĐƠN VAT & PHIẾU BẢO HÀNH ĐIỆN TỬ) -->
+    <div id="invoiceModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="w-full max-w-4xl max-h-[95vh] overflow-y-auto my-auto">
+            <div id="invoiceContent">
+                <!-- Dynamically rendered by openInvoiceModal() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. ONLINE WARRANTY LOOKUP MODAL (TRA CỨU BẢO HÀNH ĐIỆN TỬ) -->
+    <div id="warrantyLookupModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-white font-bold text-base">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>Tra Cứu Bảo Hành Điện Tử Trực Tuyến</span>
+                </div>
+                <button onclick="closeWarrantyLookupModal()" class="text-gray-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-400">
+                Nhập số IMEI (15 số) in trên thân máy/vỏ hộp hoặc Số điện thoại mua hàng để kiểm tra thời hạn và lịch sử bảo hành.
+            </p>
+
+            <form onsubmit="handleWarrantyLookup(event)" class="space-y-4">
+                <div class="relative">
+                    <input type="text" id="warrantySearchInput" required placeholder="Nhập IMEI (ví dụ: 862045061234567) hoặc SĐT..." 
+                        class="w-full bg-slate-800 border border-slate-700 text-xs sm:text-sm text-white rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-emerald-500 font-mono-code">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+                    <i class="fa-solid fa-search"></i> Kiểm Tra Thông Tin Bảo Hành
+                </button>
+            </form>
+
+            <!-- Results container -->
+            <div id="warrantyLookupResult">
+                <!-- Sample hints -->
+                <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-800 text-[11px] text-gray-400 space-y-1">
+                    <span class="font-bold text-gray-300">💡 Gợi ý tra cứu mẫu:</span>
+                    <div>• SĐT: <strong class="text-blue-400 font-mono-code">0901234567</strong> (iPhone 16 Pro Max)</div>
+                    <div>• SĐT: <strong class="text-blue-400 font-mono-code">0988889999</strong> (Galaxy S24 Ultra)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. COMPREHENSIVE WARRANTY POLICY MODAL -->
+    <div id="warrantyPolicyModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-white font-bold text-base">
+                    <i class="fa-solid fa-award text-amber-400"></i>
+                    <span>Chính Sách Bảo Hành & Đổi Trả NextGen Mobile</span>
+                </div>
+                <button onclick="closeWarrantyModal()" class="text-gray-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-gray-300 leading-relaxed">
+                <div class="space-y-1.5">
+                    <h4 class="font-bold text-white text-sm text-blue-400">1. Chính Sách 1 Đổi 1 Trong 30 Ngày</h4>
+                    <p>• Trong vòng 30 ngày kể từ ngày nhận hàng, nếu điện thoại phát sinh lỗi phần cứng do nhà sản xuất (nguồn, màn hình, sóng, camera...), quý khách được đổi ngay 01 máy mới nguyên seal cùng mẫu mã và màu sắc.</p>
+                    <p>• Thủ tục thẩm định kỹ thuật nhanh chóng tại chỗ trong vòng 15 - 30 phút, không cần gửi đi chờ đợi.</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <h4 class="font-bold text-white text-sm text-emerald-400">2. Bảo Hành Chính Hãng 12 - 24 Tháng</h4>
+                    <p>• Sản phẩm được bảo hành chính hãng tại tất cả các trung tâm bảo hành ủy quyền của Apple, Samsung, Xiaomi, OPPO, Vivo, Realme, ASUS trên toàn quốc.</p>
+                    <p>• Khách hàng có thể mang máy đến trực tiếp showroom NextGen Mobile hoặc TTBH ủy quyền của hãng kèm hóa đơn điện tử.</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <h4 class="font-bold text-white text-sm text-purple-400">3. Chính Sách Cho Mượn Máy Dùng Tạm</h4>
+                    <p>• Trong trường hợp máy cần giữ lại để kiểm tra từ 48 giờ trở lên, NextGen Mobile hỗ trợ cho khách hàng mượn điện thoại có tính năng tương đương để sử dụng hoàn toàn miễn phí.</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <h4 class="font-bold text-white text-sm text-rose-400">4. Các Trường Hợp Không Thuộc Phạm Vi Bảo Hành Tiêu Chuẩn</h4>
+                    <p>• Máy bị rơi vỡ, nứt mẻ, cong vênh, tì đè hoặc ngấm chất lỏng vượt quá tiêu chuẩn nhà sản xuất (trừ khi khách hàng đã đăng ký Gói Bảo Hành Vàng Rơi Vỡ).</p>
+                    <p>• Máy đã bị can thiệp can thiệp phần cứng từ bên ngoài hoặc chạy ROM can thiệp hệ thống (Root, Unlock Bootloader).</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-4 flex justify-end">
+                <button onclick="closeWarrantyModal()" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-500">
+                    Đã hiểu & Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. TERMS & CONDITIONS MODAL -->
+    <div id="termsModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl p-6 sm:p-8 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white">Điều Khoản Mua Hàng & Bảo Mật Dữ Liệu</h3>
+                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3 text-xs text-gray-300 leading-relaxed max-h-80 overflow-y-auto pr-2">
+                <p>1. Khách hàng cam kết thông tin cá nhân cung cấp (Họ tên, CCCD, SĐT, Địa chỉ, Email) là chính xác để phục vụ xuất hóa đơn hợp pháp và kích hoạt bảo hành điện tử theo quy định của Pháp luật Việt Nam.</p>
+                <p>2. NextGen Mobile cam kết bảo mật tuyệt đối thông tin cá nhân của khách hàng theo Nghị định 13/2023/NĐ-CP về Bảo vệ dữ liệu cá nhân.</p>
+                <p>3. Khi nhận hàng, khách hàng có quyền đồng kiểm ngoại quan máy và phụ kiện trước khi thanh toán cho nhân viên chuyển phát (COD).</p>
+                <p>4. Mọi giao dịch đều được ghi nhận bằng Hóa đơn điện tử có mã tra cứu bảo hành minh bạch.</p>
+            </div>
+            <div class="border-t border-slate-800 pt-3 flex justify-end">
+                <button onclick="closeTermsModal()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold">Đã Đọc & Đồng Ý</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. TOAST NOTIFICATION COMPONENT -->
+    <div id="appToast" class="fixed bottom-6 right-6 z-50 hidden bg-slate-900 border border-blue-500/80 text-white px-5 py-3.5 rounded-2xl shadow-2xl items-center gap-3 fade-in max-w-md no-print">
+        <i class="fa-solid fa-circle-check text-blue-400 text-lg shrink-0"></i>
+        <span id="appToastMessage" class="text-xs sm:text-sm font-medium">Thông báo hệ thống</span>
+    </div>
+
+    <!-- 12. FOOTER COMPONENT -->
+    <footer class="bg-black border-t border-slate-800 mt-20 text-xs text-gray-400 py-12 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-mobile-screen text-blue-500"></i> Hãng Điện Thoại
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="selectBrand('Apple')" class="hover:text-blue-400">Apple iPhone 16 Series</button></li>
+                        <li><button onclick="selectBrand('Samsung')" class="hover:text-blue-400">Samsung Galaxy S24 / Fold6</button></li>
+                        <li><button onclick="selectBrand('Xiaomi')" class="hover:text-blue-400">Xiaomi 14 Ultra Leica</button></li>
+                        <li><button onclick="selectBrand('OPPO')" class="hover:text-blue-400">OPPO Find X7 / Reno 12</button></li>
+                        <li><button onclick="selectBrand('Vivo')" class="hover:text-blue-400">Vivo X100 Pro ZEISS</button></li>
+                        <li><button onclick="selectBrand('ASUS')" class="hover:text-blue-400">ASUS ROG Gaming Phone</button></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> Dịch Vụ & Bảo Hành
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="openWarrantyModal()" class="hover:text-white">Chính sách 1 đổi 1 trong 30 ngày</button></li>
+                        <li><button onclick="openWarrantyLookupModal()" class="hover:text-white">Tra cứu bảo hành theo IMEI/SĐT</button></li>
+                        <li><a href="#" class="hover:text-white">Thu cũ đổi mới trợ giá 5 Triệu</a></li>
+                        <li><a href="#" class="hover:text-white">Gói Bảo Hành Vàng (Rơi vỡ - Vào nước)</a></li>
+                        <li><a href="#" class="hover:text-white">Chính sách xuất hóa đơn GTGT (VAT)</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-truck text-purple-400"></i> Vận Chuyển & Thanh Toán
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><span class="text-gray-300">Giao hàng COD toàn quốc</span></li>
+                        <li><span class="text-gray-300">Hỏa tốc Express 2H nội thành</span></li>
+                        <li><span class="text-gray-300">Chuyển khoản VietQR tự động 24/7</span></li>
+                        <li><span class="text-gray-300">Thanh toán ví MoMo</span></li>
+                        <li><span class="text-gray-300">Trả góp 0% qua HomeCredit / Thẻ</span></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-amber-400"></i> Tổng Đài Hỗ Trợ 24/7
+                    </h4>
+                    <p class="text-gray-300 font-semibold text-sm text-blue-400">1900 8888 66 (Miễn phí)</p>
+                    <p class="text-[11px] text-gray-400">Showroom Flagship: 191 Hai Bà Trưng, Phường 6, Quận 3, TP. Hồ Chí Minh</p>
+                    <p class="text-[11px] text-gray-400">Email: hotro@nextgenmobile.vn</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px]">
+                <p>© 2026 NEXTGEN MOBILE. Hệ thống bán lẻ điện thoại di động chính hãng ủy quyền tại Việt Nam.</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="openTermsModal()" class="hover:underline">Điều khoản dịch vụ</button>
+                    <span>•</span>
+                    <button onclick="openTermsModal()" class="hover:underline">Chính sách bảo mật CCCD</button>
+                    <span>•</span>
+                    <button onclick="openWarrantyModal()" class="hover:underline">Quy định bảo hành</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App Data & Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

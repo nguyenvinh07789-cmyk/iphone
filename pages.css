@@ -1,0 +1,19 @@
+
+.page-shell{min-height:100vh;background:#0b0f19;color:#f8fafc;font-family:'Plus Jakarta Sans',sans-serif}
+.page-container{max-width:1200px;margin:auto;padding:0 20px}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(11,15,25,.92);backdrop-filter:blur(16px);border-bottom:1px solid #1e293b}
+.site-nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:800;font-size:20px;color:#fff;text-decoration:none}.brand span{color:#3b82f6}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap}.nav-links a{color:#94a3b8;text-decoration:none;font-size:13px;font-weight:700}.nav-links a:hover,.nav-links a.active{color:#60a5fa}
+.hero{padding:80px 0 55px}.hero h1{font-size:clamp(34px,6vw,64px);line-height:1.05;margin:10px 0 18px}.hero p{color:#94a3b8;max-width:720px;line-height:1.8}
+.kicker{color:#60a5fa;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.grid{display:grid;gap:20px}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:#111827;border:1px solid #1e293b;border-radius:22px;padding:24px;box-shadow:0 12px 30px rgba(0,0,0,.18)}.card h3{margin:0 0 10px}.card p,.card li{color:#94a3b8;font-size:13px;line-height:1.75}
+.btn{display:inline-block;padding:12px 18px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:800}.btn-primary{background:#2563eb;color:#fff}.btn-secondary{border:1px solid #334155;color:#e2e8f0}
+.section{padding:55px 0}.section h2{font-size:30px;margin:0 0 12px}.muted{color:#94a3b8}
+.product-page{padding:45px 0}.product-box{display:grid;grid-template-columns:1fr 1fr;gap:30px}.product-box img{width:100%;border-radius:22px;background:#111827}
+.gallery-item img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;background:#111827}
+.article-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.article-list .card{min-height:220px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:700;color:#cbd5e1}.field input,.field textarea,.field select{background:#0f172a;color:#fff;border:1px solid #334155;border-radius:12px;padding:12px}.field textarea{min-height:140px}
+footer{margin-top:70px;padding:40px 0;border-top:1px solid #1e293b;color:#64748b;font-size:12px}
+@media(max-width:800px){.nav-links{display:none}.grid-3,.grid-4,.article-list,.product-box,.form-grid{grid-template-columns:1fr}.hero{padding-top:50px}.site-nav{min-height:64px}}

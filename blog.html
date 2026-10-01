@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - NEXTGEN MOBILE</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        darkBg: '#0b0f19',
+                        darkCard: '#111827',
+                        darkBorder: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white text-xs py-2 px-4 shadow-md no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center gap-2 overflow-hidden text-center sm:text-left">
+                <span class="bg-amber-400 text-slate-900 font-extrabold text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider badge-flash">
+                    HOT PROMO
+                </span>
+                <span class="font-medium truncate">
+                    🔥 Giảm thêm 500.000đ khi nhập mã <span class="font-bold underline text-amber-300">TECHHOT500</span> | Miễn phí giao hàng COD đơn từ 15 Triệu
+                </span>
+            </div>
+            <div class="flex items-center gap-4 text-[11px] shrink-0 font-medium">
+                <button onclick="openWarrantyModal()" class="hover:text-amber-200 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-shield-halved text-[10px]"></i> Chính sách bảo hành
+                </button>
+                <span>|</span>
+                <button onclick="openWarrantyLookupModal()" class="hover:text-amber-200 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-magnifying-glass text-[10px]"></i> Tra cứu bảo hành
+                </button>
+                <span>|</span>
+                <span class="text-amber-200 font-bold"><i class="fa-solid fa-phone text-[10px]"></i> 1900 8888 66</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN HEADER & SEARCH BAR -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-slate-800 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer shrink-0" onclick="navigateToCatalog('all')">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            NEXTGEN <span class="text-blue-500">MOBILE</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Chính Hãng • Bảo Hành 1-1</p>
+                    </div>
+                </div>
+
+                <!-- Instant Search Input -->
+                <div class="flex-grow max-w-xl hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" oninput="handleSearch(this.value)" 
+                            placeholder="Tìm kiếm iPhone 16, Galaxy S24, Xiaomi 14, Chip Snapdragon..." 
+                            class="w-full bg-slate-900/90 border border-slate-700/80 text-xs sm:text-sm text-white rounded-2xl pl-11 pr-10 py-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-gray-500">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+                        <button onclick="resetAllFilters()" title="Xóa tìm kiếm" class="absolute right-3.5 top-3 text-gray-500 hover:text-white">
+                            <i class="fa-solid fa-circle-xmark text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Shopping Cart Trigger -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Warranty Lookup Quick Button -->
+                    <button onclick="openWarrantyLookupModal()" class="hidden lg:flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-xs font-semibold text-gray-200 transition-all">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                        <span>Tra Cứu Bảo Hành</span>
+                    </button>
+
+                    <!-- Cart Button with Animated Badge -->
+                    <button onclick="openCartDrawer()" class="relative p-3 bg-slate-900 border border-slate-700/80 rounded-2xl hover:border-blue-500 text-gray-200 hover:text-white transition-all shadow-md">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cartBadgeCount" class="absolute -top-1.5 -right-1.5 bg-blue-600 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 shadow">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar (underneath on small devices) -->
+            <div class="pb-3 md:hidden">
+                <div class="relative">
+                    <input type="text" oninput="handleSearch(this.value)" 
+                        placeholder="Tìm kiếm điện thoại theo tên, hãng, chip..." 
+                        class="w-full bg-slate-900 border border-slate-800 text-xs text-white rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:border-blue-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. MOBILE QUICK BRANDS HORIZONTAL SCROLLER -->
+    <div class="lg:hidden bg-slate-900/60 border-b border-slate-800 py-2.5 px-4 overflow-x-auto no-print">
+        <div id="mobileBrandsBar" class="flex items-center gap-2">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- 4. MAIN WORKSPACE / VIEWS -->
+    
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<section class="py-8">
+<div class="bg-slate-900 border border-slate-800 rounded-3xl p-7 sm:p-10 shadow-xl relative overflow-hidden">
+<div class="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl"></div>
+<div class="relative"><div class="text-[10px] uppercase tracking-widest font-black text-blue-400 mb-3">NEXTGEN MOBILE</div>
+<h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">NEXTGEN BLOG</h1>
+<p class="text-sm text-gray-400 max-w-2xl mt-4 leading-7">Các bài viết mẫu dùng card dark giống hệ thống catalog, tập trung vào mua máy, bảo hành và công nghệ.</p></div></div></section><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8"><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Mua sắm</span><h2 class="text-base font-black text-white mt-3 leading-6">Chọn smartphone theo nhu cầu thay vì chỉ nhìn thông số</h2><p class="text-xs text-gray-400 leading-6 mt-3">Xác định màn hình, camera, pin và hiệu năng trước khi quyết định.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Bảo hành</span><h2 class="text-base font-black text-white mt-3 leading-6">IMEI là gì và vì sao nên lưu lại?</h2><p class="text-xs text-gray-400 leading-6 mt-3">IMEI hỗ trợ đối chiếu thiết bị và quá trình tra cứu bảo hành.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Công nghệ</span><h2 class="text-base font-black text-white mt-3 leading-6">120Hz và 165Hz khác nhau thế nào?</h2><p class="text-xs text-gray-400 leading-6 mt-3">Tìm hiểu tần số quét và trường hợp màn hình tần số cao.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Pin</span><h2 class="text-base font-black text-white mt-3 leading-6">Thói quen giúp pin điện thoại bền hơn</h2><p class="text-xs text-gray-400 leading-6 mt-3">Một số nguyên tắc sử dụng và sạc có thể áp dụng hằng ngày.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Camera</span><h2 class="text-base font-black text-white mt-3 leading-6">Đừng chỉ nhìn megapixel</h2><p class="text-xs text-gray-400 leading-6 mt-3">Cảm biến, tiêu cự, xử lý ảnh và chống rung đều ảnh hưởng.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article><article class="product-card bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"><span class="text-[10px] uppercase tracking-wider font-black text-blue-400">Thanh toán</span><h2 class="text-base font-black text-white mt-3 leading-6">COD, MoMo và VietQR</h2><p class="text-xs text-gray-400 leading-6 mt-3">Tổng quan các lựa chọn thanh toán trong quy trình đặt hàng.</p><div class="mt-5 text-[10px] text-gray-500">NEXTGEN MOBILE · 2026</div></article></div>
+</main>
+<footer class="bg-black border-t border-slate-800 mt-20 text-xs text-gray-400 py-12 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-mobile-screen text-blue-500"></i> Hãng Điện Thoại
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="selectBrand('Apple')" class="hover:text-blue-400">Apple iPhone 16 Series</button></li>
+                        <li><button onclick="selectBrand('Samsung')" class="hover:text-blue-400">Samsung Galaxy S24 / Fold6</button></li>
+                        <li><button onclick="selectBrand('Xiaomi')" class="hover:text-blue-400">Xiaomi 14 Ultra Leica</button></li>
+                        <li><button onclick="selectBrand('OPPO')" class="hover:text-blue-400">OPPO Find X7 / Reno 12</button></li>
+                        <li><button onclick="selectBrand('Vivo')" class="hover:text-blue-400">Vivo X100 Pro ZEISS</button></li>
+                        <li><button onclick="selectBrand('ASUS')" class="hover:text-blue-400">ASUS ROG Gaming Phone</button></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> Dịch Vụ & Bảo Hành
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="openWarrantyModal()" class="hover:text-white">Chính sách 1 đổi 1 trong 30 ngày</button></li>
+                        <li><button onclick="openWarrantyLookupModal()" class="hover:text-white">Tra cứu bảo hành theo IMEI/SĐT</button></li>
+                        <li><a href="#" class="hover:text-white">Thu cũ đổi mới trợ giá 5 Triệu</a></li>
+                        <li><a href="#" class="hover:text-white">Gói Bảo Hành Vàng (Rơi vỡ - Vào nước)</a></li>
+                        <li><a href="#" class="hover:text-white">Chính sách xuất hóa đơn GTGT (VAT)</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-truck text-purple-400"></i> Vận Chuyển & Thanh Toán
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><span class="text-gray-300">Giao hàng COD toàn quốc</span></li>
+                        <li><span class="text-gray-300">Hỏa tốc Express 2H nội thành</span></li>
+                        <li><span class="text-gray-300">Chuyển khoản VietQR tự động 24/7</span></li>
+                        <li><span class="text-gray-300">Thanh toán ví MoMo</span></li>
+                        <li><span class="text-gray-300">Trả góp 0% qua HomeCredit / Thẻ</span></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-amber-400"></i> Tổng Đài Hỗ Trợ 24/7
+                    </h4>
+                    <p class="text-gray-300 font-semibold text-sm text-blue-400">1900 8888 66 (Miễn phí)</p>
+                    <p class="text-[11px] text-gray-400">Showroom Flagship: 191 Hai Bà Trưng, Phường 6, Quận 3, TP. Hồ Chí Minh</p>
+                    <p class="text-[11px] text-gray-400">Email: hotro@nextgenmobile.vn</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px]">
+                <p>© 2026 NEXTGEN MOBILE. Hệ thống bán lẻ điện thoại di động chính hãng ủy quyền tại Việt Nam.</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="openTermsModal()" class="hover:underline">Điều khoản dịch vụ</button>
+                    <span>•</span>
+                    <button onclick="openTermsModal()" class="hover:underline">Chính sách bảo mật CCCD</button>
+                    <span>•</span>
+                    <button onclick="openWarrantyModal()" class="hover:underline">Quy định bảo hành</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
